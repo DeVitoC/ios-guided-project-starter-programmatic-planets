@@ -84,11 +84,28 @@ class SettingsViewController: UIViewController {
         
         NSLayoutConstraint.activate([switchTopConstraint, switchTrailingConstraint])
         
+        self.shouldShowPlutoSwitch = shouldShowPlutoSwitch
         
+        // Label
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Is Pluto a planet?"
+        
+        view.addSubview(label)
+        
+        // This is the x constraint
+        // Another way to turn on a constraint (set isActive to true)
+        label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        
+        // This is the y constraint
+        label.centerYAnchor.constraint(equalTo: shouldShowPlutoSwitch.centerYAnchor).isActive = true
+        
+        // This protects the switch from being overrun with text if the label's contents grow
+        label.trailingAnchor.constraint(lessThanOrEqualTo: shouldShowPlutoSwitch.leadingAnchor, constant: -8).isActive = true
     }
     
     private func updateViews() {
         let userDefaults = UserDefaults.standard
-//        shouldShowPlutoSwitch.isOn = userDefaults.bool(forKey: .shouldShowPlutoKey)
+        shouldShowPlutoSwitch.isOn = userDefaults.bool(forKey: .shouldShowPlutoKey)
     }
 }
