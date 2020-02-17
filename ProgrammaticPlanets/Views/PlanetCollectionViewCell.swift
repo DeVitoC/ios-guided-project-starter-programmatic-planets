@@ -20,8 +20,8 @@ class PlanetCollectionViewCell: UICollectionViewCell {
     }
     
     private func updateViews() {
-        imageView.image = planet.image
-        nameLabel.text = planet.name
+//        imageView.image = planet.image
+//        nameLabel.text = planet.name
     }
     
 }

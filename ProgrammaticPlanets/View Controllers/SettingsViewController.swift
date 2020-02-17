@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController {
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
+        setUpSubviews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -24,7 +25,7 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Action Handlers
     
-    func changeShouldShowPluto(_ sender: UISwitch) {
+    @objc func changeShouldShowPluto(_ sender: UISwitch) {
         let userDefaults = UserDefaults.standard
         userDefaults.set(sender.isOn, forKey: .shouldShowPlutoKey)
     }
@@ -35,8 +36,59 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Private
     
+    private func setUpSubviews() {
+        // Button
+        let doneButton = UIButton(type: .system)
+        // Always turn this off, prevents "extra" constraints from being applied
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.setTitle("Done", for: .normal)
+        // The target-action pattern, configures a method to run when the button is tapped.
+        doneButton.addTarget(self, action: #selector(done), for: .touchUpInside)
+        
+        // Adds the button to the view hierarchy
+        view.addSubview(doneButton)
+        
+        // This is the y constraint
+        let doneButtonTopConstraint = NSLayoutConstraint(item: doneButton,
+                                                         attribute: .top,
+                                                         relatedBy: .equal,
+                                                         toItem: view.safeAreaLayoutGuide,
+                                                         attribute: .top,
+                                                         multiplier: 1,
+                                                         constant: 20)
+        
+        // This is the x constraint
+        let doneButtonTrailingConstraint = doneButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        
+        NSLayoutConstraint.activate([doneButtonTopConstraint, doneButtonTrailingConstraint])
+        
+        // Switch
+        
+        let shouldShowPlutoSwitch = UISwitch()
+        shouldShowPlutoSwitch.translatesAutoresizingMaskIntoConstraints = false
+        shouldShowPlutoSwitch.addTarget(self, action: #selector(changeShouldShowPluto(_:)), for: .valueChanged)
+        
+        view.addSubview(shouldShowPlutoSwitch)
+        
+        // This is the y constraint
+        let switchTopConstraint = NSLayoutConstraint(item: shouldShowPlutoSwitch,
+                                                     attribute: .top,
+                                                     relatedBy: .equal,
+                                                     toItem: doneButton,
+                                                     attribute: .bottom,
+                                                     multiplier: 1,
+                                                     constant: 60)
+        
+        // This is the x constraint
+        let switchTrailingConstraint = shouldShowPlutoSwitch.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        
+        NSLayoutConstraint.activate([switchTopConstraint, switchTrailingConstraint])
+        
+        
+    }
+    
     private func updateViews() {
         let userDefaults = UserDefaults.standard
-        shouldShowPlutoSwitch.isOn = userDefaults.bool(forKey: .shouldShowPlutoKey)
+//        shouldShowPlutoSwitch.isOn = userDefaults.bool(forKey: .shouldShowPlutoKey)
     }
 }
